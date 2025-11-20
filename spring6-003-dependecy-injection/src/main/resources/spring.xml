@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<bean id="userDaoBean" class="com.powernode.spring6.dao.UserDao"/>
+    <bean id="userServiceBean" class="com.powernode.spring6.service.UserService">
+        <!--调用set方法 要这个标签 name要指定 是set方法名 去掉set, 首字母变小写,就可以了-->
+        <property name="userDao" ref="userDaoBean"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Log4j2 配置文件
+    - 自动每 30 秒检查一次配置变更（monitorInterval）
+    - 日志目录默认为 ./logs，可通过 -Dlogs.dir=/your/path 覆盖
+-->
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <!-- 默认日志目录：项目根目录下的 logs 文件夹 -->
+        <Property name="LOG_HOME">${sys:logs.dir:-logs}</Property>
+        <!-- 日志格式统一定义 -->
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- 控制台输出（带颜色，仅限支持 ANSI 的终端） -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+        </Console>
+
+        <!-- 按天滚动的文件日志 -->
+        <RollingFile name="RollingFile"
+                     fileName="${LOG_HOME}/app.log"
+                     filePattern="${LOG_HOME}/app-%d{yyyy-MM-dd}.%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+            <Policies>
+                <!-- 每天滚动一次 -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- 单个文件超过 100MB 也滚动（防止单日日志过大） -->
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- 限制每个日期最多生成 5 个归档文件（如 app-2025-11-18.0.log, .1.log...） -->
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Spring 相关日志可单独控制（示例：降低 Spring 启动噪音） -->
+        <!--
+        <Logger name="org.springframework" level="warn" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+        -->
+
+        <!-- 根日志器 -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

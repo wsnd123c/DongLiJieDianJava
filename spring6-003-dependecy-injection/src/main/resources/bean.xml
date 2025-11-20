@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--p命名空间就是    xmlns:p="http://www.springframework.org/schema/p"-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="orderBean" class="com.powernode.spring6.dao.Order"/>
+    <bean id="orderBeanService" class="com.powernode.spring6.service.OrderService">
+        <property name="str" value="张三"/>
+    </bean>
+    <bean id="yuqian" class="com.powernode.spring6.dao.YuQian">
+        <property name="aiHaos">
+            <array>
+                <value>写代码</value>
+                <value>喝酒</value>
+            </array>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="1" value="good"/>
+                <entry key="2" value="goods"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="dogBean" class="com.powernode.spring6.dao.Dog"/>
+</beans>
